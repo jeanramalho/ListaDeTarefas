@@ -30,6 +30,8 @@ class ListaDeTarefasHomeView: UIView {
     }
     
     private func setConstraints(){
-        
+        NSLayoutConstraint.activate([
+            
+        ])
     }
 }
