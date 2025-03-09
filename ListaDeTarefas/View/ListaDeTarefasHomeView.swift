@@ -20,7 +20,8 @@ class ListaDeTarefasHomeView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Lista de Tarefas"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+        label.font = UIFont.systemFont(ofSize: 24, weight: .heavy)
+        label.textColor = .darkGray
         return label
     }()
     
@@ -28,7 +29,7 @@ class ListaDeTarefasHomeView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "plus"), for: .normal)
-        button.tintColor = .blue
+        button.tintColor = .systemBlue
         return button
     }()
     
@@ -68,13 +69,13 @@ class ListaDeTarefasHomeView: UIView {
             headerView.topAnchor.constraint(equalTo: topAnchor),
             headerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            headerView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2),
+            headerView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.1),
             
             titleLabel.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 8),
+            titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -12),
             
             addButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            addButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -12),
+            addButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -18),
             
             tarefasTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 12),
             tarefasTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
