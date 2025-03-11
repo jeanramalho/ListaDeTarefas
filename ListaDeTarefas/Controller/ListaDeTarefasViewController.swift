@@ -25,6 +25,10 @@ class ListaDeTarefasViewController: UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
     private func setup(){
         
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -56,6 +60,7 @@ class ListaDeTarefasViewController: UIViewController {
         contentView.tarefasTableView.register(TarefaTableViewCell.self, forCellReuseIdentifier: TarefaTableViewCell.identifier)
                 
         contentView.addButton.addTarget(self, action: #selector(showCreateView), for: .touchUpInside)
+        
     }
     
     
@@ -65,10 +70,25 @@ class ListaDeTarefasViewController: UIViewController {
         let createView = CreateViewController()
         navigationController?.pushViewController(createView, animated: true)
     }
-
+    
+    @objc func modalEdit(){
+        print("clicado")
+        let modal = EditModalViewController()
+        modal.modalPresentationStyle = .pageSheet
+        
+        
+        modal.modalPresentationStyle = .overCurrentContext
+        modal.modalTransitionStyle = .crossDissolve
+        modal.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        
+        present(modal, animated: true, completion: nil)
+    }
+    
+   
 }
 
-extension ListaDeTarefasViewController: UITableViewDelegate, UITableViewDataSource {
+extension ListaDeTarefasViewController: UITableViewDelegate, UITableViewDataSource, TarefaTableViewCellDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 20
     }
@@ -78,9 +98,15 @@ extension ListaDeTarefasViewController: UITableViewDelegate, UITableViewDataSour
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TarefaTableViewCell.identifier, for: indexPath) as? TarefaTableViewCell else {return UITableViewCell()}
         
         cell.tarefaLabel.text = "tarefa teste"
+        cell.delegate = self
         
         return cell
     }
+    
+    func tapEditButton(in cell: TarefaTableViewCell) {
+        modalEdit()
+    }
+
     
     
 }

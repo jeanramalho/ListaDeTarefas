@@ -18,6 +18,9 @@ class CreateViewController: UIViewController {
     
     private func setup(){
         
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationItem.title = "Criar uma nova tarefa".uppercased()
+        
         setHierarchy()
         setConstraints()
     }

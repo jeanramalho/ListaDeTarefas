@@ -7,9 +7,15 @@
 import Foundation
 import UIKit
 
+protocol TarefaTableViewCellDelegate: AnyObject {
+    func tapEditButton(in cell: TarefaTableViewCell)
+}
+
 class TarefaTableViewCell: UITableViewCell {
     
     static let identifier: String = "TarefaTableViewCell"
+    
+    weak var delegate: TarefaTableViewCellDelegate?
     
     lazy var tarefaLabel: UILabel = {
         let label = UILabel()
@@ -24,6 +30,7 @@ class TarefaTableViewCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("editar", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
+        button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -43,8 +50,8 @@ class TarefaTableViewCell: UITableViewCell {
     }
     
     private func setHierarchy(){
-        addSubview(tarefaLabel)
-        addSubview(editButton)
+        contentView.addSubview(tarefaLabel)
+        contentView.addSubview(editButton)
     }
     
     private func setConstraints(){
@@ -59,5 +66,10 @@ class TarefaTableViewCell: UITableViewCell {
             
             
         ])
+    }
+    
+    @objc private func editButtonTapped(){
+        delegate?.tapEditButton(in: self)
+        print("clicadoooo")
     }
 }
