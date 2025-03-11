@@ -10,6 +10,8 @@ import UIKit
 class ListaDeTarefasViewController: UIViewController {
     
     let contentView: ListaDeTarefasHomeView = ListaDeTarefasHomeView()
+    private let tarefasDB = TarefaModel()
+    var listaDeTarefas: [String] = []
     
     init(){
         super.init(nibName: nil, bundle: nil)
@@ -27,15 +29,21 @@ class ListaDeTarefasViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: true)
+        updateTasks()
     }
     
     private func setup(){
         
         navigationController?.setNavigationBarHidden(true, animated: true)
- 
+        
         setupContentView()
         setHierarchy()
         setConstraints()
+    }
+    
+    private func updateTasks(){
+        listaDeTarefas = tarefasDB.listarTarefas()
+        contentView.tarefasTableView.reloadData()
     }
     
     private func setHierarchy(){
@@ -65,14 +73,13 @@ class ListaDeTarefasViewController: UIViewController {
     
     
     @objc func showCreateView(){
-        print("botao clicado")
         
         let createView = CreateViewController()
         navigationController?.pushViewController(createView, animated: true)
     }
     
     @objc func modalEdit(){
-        print("clicado")
+        
         let modal = EditModalViewController()
         modal.modalPresentationStyle = .pageSheet
         
@@ -90,14 +97,14 @@ class ListaDeTarefasViewController: UIViewController {
 extension ListaDeTarefasViewController: UITableViewDelegate, UITableViewDataSource, TarefaTableViewCellDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return listaDeTarefas.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TarefaTableViewCell.identifier, for: indexPath) as? TarefaTableViewCell else {return UITableViewCell()}
         
-        cell.tarefaLabel.text = "tarefa teste"
+        cell.tarefaLabel.text = listaDeTarefas[indexPath.row]
         cell.delegate = self
         
         return cell
@@ -108,6 +115,13 @@ extension ListaDeTarefasViewController: UITableViewDelegate, UITableViewDataSour
     }
 
     
-    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            self.tarefasDB.deletarTarefa(index: indexPath.row)
+            listaDeTarefas = tarefasDB.listarTarefas()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
 }
 

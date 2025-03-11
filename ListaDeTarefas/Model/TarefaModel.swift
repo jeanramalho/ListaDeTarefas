@@ -29,5 +29,16 @@ class TarefaModel {
             return []
         }
     }
+    
+    func deletarTarefa(index: Int){
+        //recupera tarefas atuais
+        tarefas = listarTarefas()
+        
+        //deleta tarefa escolhida pelo index
+        tarefas.remove(at: index)
+        
+        //salva lista de tarefas atualizadas
+        UserDefaults.standard.set(tarefas, forKey: chave)
+    }
 }
 
