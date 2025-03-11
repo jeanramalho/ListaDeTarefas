@@ -14,15 +14,17 @@ class TarefaTableViewCell: UITableViewCell {
     lazy var tarefaLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 14, weight: .heavy)
-        label.numberOfLines = 1
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.numberOfLines = 0
         return label
     }()
     
     lazy var editButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button
+        button.setTitle("editar", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        return button
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -41,10 +43,21 @@ class TarefaTableViewCell: UITableViewCell {
     }
     
     private func setHierarchy(){
-        
+        addSubview(tarefaLabel)
+        addSubview(editButton)
     }
     
     private func setConstraints(){
-        
+        NSLayoutConstraint.activate([
+            editButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            editButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            
+            tarefaLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            tarefaLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            tarefaLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            tarefaLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            
+            
+        ])
     }
 }

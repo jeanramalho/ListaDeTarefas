@@ -53,6 +53,7 @@ class ListaDeTarefasViewController: UIViewController {
         
         contentView.tarefasTableView.delegate = self
         contentView.tarefasTableView.dataSource = self
+        contentView.tarefasTableView.register(TarefaTableViewCell.self, forCellReuseIdentifier: TarefaTableViewCell.identifier)
                 
         contentView.addButton.addTarget(self, action: #selector(showCreateView), for: .touchUpInside)
     }
@@ -73,7 +74,12 @@ extension ListaDeTarefasViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TarefaTableViewCell.identifier, for: indexPath) as? TarefaTableViewCell else {return UITableViewCell()}
+        
+        cell.tarefaLabel.text = "tarefa teste"
+        
+        return cell
     }
     
     
