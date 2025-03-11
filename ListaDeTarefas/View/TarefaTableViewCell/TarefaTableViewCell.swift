@@ -70,6 +70,6 @@ class TarefaTableViewCell: UITableViewCell {
     
     @objc private func editButtonTapped(){
         delegate?.tapEditButton(in: self)
-        print("clicadoooo")
+
     }
 }

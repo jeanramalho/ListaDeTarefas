@@ -78,9 +78,14 @@ class ListaDeTarefasViewController: UIViewController {
         navigationController?.pushViewController(createView, animated: true)
     }
     
-    @objc func modalEdit(){
+    @objc func modalEdit(tarefa: String, index: Int){
         
         let modal = EditModalViewController()
+        //passa dados para o modal
+        modal.tarefa = tarefa
+        modal.index = index
+        modal.delegate = self
+        
         modal.modalPresentationStyle = .pageSheet
         
         
@@ -94,7 +99,27 @@ class ListaDeTarefasViewController: UIViewController {
    
 }
 
-extension ListaDeTarefasViewController: UITableViewDelegate, UITableViewDataSource, TarefaTableViewCellDelegate {
+extension ListaDeTarefasViewController: TarefaTableViewCellDelegate, EditModalDelegate {
+    
+    func modalDidDismiss() {
+        self.updateTasks()
+    }
+    
+    
+    func tapEditButton(in cell: TarefaTableViewCell) {
+        
+        //recupera o indexpath da celula clicada
+        if let indexPath = contentView.tarefasTableView.indexPath(for: cell) {
+            //atribui para a variavel tarefa a tarefa clicada
+            let tarefa = listaDeTarefas[indexPath.row]
+            modalEdit(tarefa: tarefa, index: indexPath.row)
+        }
+       
+    }
+}
+
+extension ListaDeTarefasViewController: UITableViewDelegate, UITableViewDataSource  {
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listaDeTarefas.count
@@ -107,14 +132,10 @@ extension ListaDeTarefasViewController: UITableViewDelegate, UITableViewDataSour
         cell.tarefaLabel.text = listaDeTarefas[indexPath.row]
         cell.delegate = self
         
+        
         return cell
     }
-    
-    func tapEditButton(in cell: TarefaTableViewCell) {
-        modalEdit()
-    }
 
-    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             

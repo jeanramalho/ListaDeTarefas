@@ -40,5 +40,16 @@ class TarefaModel {
         //salva lista de tarefas atualizadas
         UserDefaults.standard.set(tarefas, forKey: chave)
     }
+    
+    func editarTarefa(tarefa: String, index: Int){
+        //recupera tarefas atuais
+        tarefas = listarTarefas()
+        
+        //edita tarefa escolhida
+        tarefas[index] = tarefa
+        
+        //salva lista de tarefas atualizadas
+        UserDefaults.standard.set(tarefas, forKey: chave)
+    }
 }
 

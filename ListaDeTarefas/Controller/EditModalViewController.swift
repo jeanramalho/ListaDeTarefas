@@ -7,13 +7,28 @@
 import Foundation
 import UIKit
 
+protocol EditModalDelegate: AnyObject {
+    func modalDidDismiss()
+}
+
 class EditModalViewController: UIViewController {
     
+    weak var delegate: EditModalDelegate?
     let contentView: EditModalView = EditModalView()
+    private let tarefasDB = TarefaModel()
+    
+    // variaveis para receber dados
+    var tarefa: String?
+    var index: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        delegate?.modalDidDismiss()
     }
     
     private func setup(){
@@ -30,9 +45,19 @@ class EditModalViewController: UIViewController {
     }
     
     private func setupContentView(){
+        
+        let listaDeTarefas = tarefasDB.listarTarefas()
+        
+        //garante que teremos um index valido
+        if let indice = index {
+            contentView.tarefaTextView.text = listaDeTarefas[indice]
+        }
+        
         contentView.layer.cornerRadius = 60
         
+        
         contentView.closeModalButton.addTarget(self, action: #selector(closeModal), for: .touchUpInside)
+        contentView.saveButton.addTarget(self, action: #selector(saveEdit), for: .touchUpInside)
     }
     
     private func setHierarchy(){
@@ -52,6 +77,17 @@ class EditModalViewController: UIViewController {
     
     @objc private func closeModal(){
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func saveEdit(){
+        if let indice = index {
+            if let newTask = contentView.tarefaTextView.text {
+                tarefasDB.editarTarefa(tarefa: newTask, index: indice)
+            }
+        }
+        
+        dismiss(animated: true, completion: nil)
+        
     }
     
     // 🔹 Ajusta a posição do containerView quando o teclado aparece
